@@ -1,0 +1,15 @@
+[project]
+name = "dollar-auction-workspace"
+version = "0.1.0"
+requires-python = ">=3.11"
+dependencies = [
+    "dollar-auction-tools",
+]
+
+[tool.uv.workspace]
+members = ["tools"]
+
+[tool.uv.sources]
+dollar-auction-tools = { workspace = true }
+# rs-runvault is the source of truth for reading run directories.
+runvault = { git = "https://github.com/akitenkrad/rs-runvault", subdirectory = "python" }

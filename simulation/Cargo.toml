@@ -1,0 +1,22 @@
+[package]
+name = "dollar-auction-simulation"
+version = "0.1.0"
+edition = "2021"
+
+[[bin]]
+name = "dollar-auction"
+path = "src/main.rs"
+
+[dependencies]
+clap = { version = "4.5", features = ["derive"] }
+
+# socsim — engine foundation (library mode). Git dependency; the commit is pinned in Cargo.lock.
+socsim-core   = { git = "https://github.com/akitenkrad/rs-social-simulation-tools", branch = "main", package = "socsim-core" }
+socsim-engine = { git = "https://github.com/akitenkrad/rs-social-simulation-tools", branch = "main", package = "socsim-engine" }
+# Ollama backend only: the OpenAI backend (and the Ollama -> OpenAI fallback) is deliberately not compiled in,
+# so a model can never be swapped silently mid-experiment.
+socsim-llm    = { git = "https://github.com/akitenkrad/rs-social-simulation-tools", branch = "main", package = "socsim-llm", features = ["ollama"] }
+
+# runvault — run directory, config.json, metrics.csv, events.jsonl, manifest. Pinned in Cargo.lock.
+runvault        = { git = "https://github.com/akitenkrad/rs-runvault", branch = "main" }
+runvault-socsim = { git = "https://github.com/akitenkrad/rs-runvault-socsim", branch = "main" }
