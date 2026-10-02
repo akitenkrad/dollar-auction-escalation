@@ -1,0 +1,7 @@
+run_uid,step,step_unit,scope,name,value,target_id,source
+00000000000000000000000000,,,run,x1_star.s100.b100,1,x1_star.s100.b100,Proposition 3.1
+00000000000000000000000000,,,run,x1_star.s100.b250,52,x1_star.s100.b250,Proposition 3.1
+00000000000000000000000000,,,run,solver_selfplay.first_end_rate,1,solver_selfplay.first_end_rate,Proposition 3.1
+00000000000000000000000000,,,run,solver_selfplay.waste.b250,0.52,solver_selfplay.waste.b250,Proposition 3.1
+00000000000000000000000000,,,run,x1_star_mixtie.s100.b250,50,x1_star_mixtie.s100.b250,Uniform mixing on payoff ties
+00000000000000000000000000,,,run,x1_star_mixtie.s100.b100,1,x1_star_mixtie.s100.b100,Uniform mixing on payoff ties

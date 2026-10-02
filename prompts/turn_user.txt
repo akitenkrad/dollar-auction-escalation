@@ -1,0 +1,8 @@
+Turn {{turn}}. {{value_label}}: {{s}}. Your {{limit_label}}: {{own_b}}. Other {{counterparty}} {{limit_label}}: {{opponent_b}}.
+Full {{history_label}} history:
+{{history}}
+{{paid}}
+{{legal}}
+Return exactly one JSON object. {{action_instructions}} The action field controls the decision if another field contradicts it.{{calc_format}}
+{{calculator_feedback}}
+{{violation_feedback}}

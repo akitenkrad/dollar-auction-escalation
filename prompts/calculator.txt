@@ -1,0 +1,1 @@
+An integer calculator is available. To use it, return {"action":"calc","expr":"EXPRESSION"}. It accepts non-negative integer literals, +, -, *, /, %, parentheses, and unary minus. Division and remainder use Euclidean integer operations. You may use it at most three times on one turn. An evaluation error is returned to you and still counts as one use. Example: (17 + 5) * 3.

@@ -1,13 +1,9 @@
 [project]
 name = "dollar-auction-tools"
 version = "0.1.0"
-description = "Visualization & analysis tools"
+description = "Exact reference solver tools for the dollar-auction experiment"
 requires-python = ">=3.11"
-dependencies = [
-    "matplotlib>=3.8",
-    "numpy>=1.26",
-    "pandas>=2.2",
-]
+dependencies = []
 
 [project.scripts]
 dollar-auction-tools = "dollar_auction_tools.cli:main"

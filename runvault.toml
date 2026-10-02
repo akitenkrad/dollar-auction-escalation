@@ -1,0 +1,81 @@
+[metrics."n_trials"]
+meaning = "Number of completed or invalid trials included in the cell aggregate."
+unit = "count"
+direction = "none"
+scope = ["run"]
+
+[metrics."first_end_rate"]
+meaning = "Share of trials ending with no more than one accepted bid."
+unit = "ratio"
+direction = "none"
+range = [0.0, 1.0]
+scope = ["run"]
+
+[metrics."mean_x1_dev"]
+meaning = "Mean signed difference between the observed first bid and the exact first bid."
+unit = "bid units"
+direction = "none"
+scope = ["run"]
+
+[metrics."median_t"]
+meaning = "Median number of accepted bids before the trial ended."
+unit = "count"
+direction = "none"
+scope = ["run"]
+
+[metrics."invalid_rate"]
+meaning = "Share of trials terminated after a second retryable protocol violation."
+unit = "ratio"
+direction = "none"
+range = [0.0, 1.0]
+scope = ["run"]
+
+[metrics."waste_mean"]
+meaning = "Mean sum of both players' last bids divided by the prize value."
+unit = "ratio"
+direction = "none"
+scope = ["run"]
+
+[parameters."/s"]
+meaning = "Prize or contract value."
+unit = "bid units"
+
+[parameters."/b"]
+meaning = "Commonly known bid budget or investment cap for both players."
+unit = "bid units"
+
+[parameters."/p1"]
+meaning = "Bidder implementation assigned to Player 1."
+
+[parameters."/p2"]
+meaning = "Bidder implementation assigned to Player 2."
+
+[parameters."/framing"]
+meaning = "Named or disguised presentation of the game."
+
+[parameters."/opponent"]
+meaning = "Opponent type announced in the prompt."
+
+[parameters."/paraphrase"]
+meaning = "Prompt paraphrase identifier."
+
+[parameters."/calculator"]
+meaning = "Whether the bounded integer calculator is available."
+
+[parameters."/display_paid_so_far"]
+meaning = "Whether the observation explicitly displays the player's current payment."
+
+[parameters."/root_seed"]
+meaning = "Root seed used to derive the trial seed."
+
+[parameters."/trial_seed"]
+meaning = "Seed derived from the root, cell index, and trial index."
+
+[parameters."/temperature"]
+meaning = "LLM sampling temperature."
+
+[parameters."/think"]
+meaning = "Thinking-mode value sent with every LLM request."
+
+[parameters."/command"]
+meaning = "CLI subcommand that created the run."

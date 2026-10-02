@@ -1,0 +1,446 @@
+[
+  {
+    "s": 3,
+    "b": 1,
+    "x1": 1,
+    "second_reply": null
+  },
+  {
+    "s": 3,
+    "b": 2,
+    "x1": 2,
+    "second_reply": null
+  },
+  {
+    "s": 3,
+    "b": 3,
+    "x1": 1,
+    "second_reply": null
+  },
+  {
+    "s": 3,
+    "b": 4,
+    "x1": 2,
+    "second_reply": null
+  },
+  {
+    "s": 3,
+    "b": 5,
+    "x1": 1,
+    "second_reply": null
+  },
+  {
+    "s": 3,
+    "b": 6,
+    "x1": 2,
+    "second_reply": null
+  },
+  {
+    "s": 3,
+    "b": 7,
+    "x1": 1,
+    "second_reply": null
+  },
+  {
+    "s": 3,
+    "b": 8,
+    "x1": 2,
+    "second_reply": null
+  },
+  {
+    "s": 3,
+    "b": 9,
+    "x1": 1,
+    "second_reply": null
+  },
+  {
+    "s": 3,
+    "b": 10,
+    "x1": 2,
+    "second_reply": null
+  },
+  {
+    "s": 3,
+    "b": 11,
+    "x1": 1,
+    "second_reply": null
+  },
+  {
+    "s": 3,
+    "b": 12,
+    "x1": 2,
+    "second_reply": null
+  },
+  {
+    "s": 5,
+    "b": 1,
+    "x1": 1,
+    "second_reply": null
+  },
+  {
+    "s": 5,
+    "b": 2,
+    "x1": 2,
+    "second_reply": null
+  },
+  {
+    "s": 5,
+    "b": 3,
+    "x1": 3,
+    "second_reply": null
+  },
+  {
+    "s": 5,
+    "b": 4,
+    "x1": 4,
+    "second_reply": null
+  },
+  {
+    "s": 5,
+    "b": 5,
+    "x1": 1,
+    "second_reply": null
+  },
+  {
+    "s": 5,
+    "b": 6,
+    "x1": 2,
+    "second_reply": null
+  },
+  {
+    "s": 5,
+    "b": 7,
+    "x1": 3,
+    "second_reply": null
+  },
+  {
+    "s": 5,
+    "b": 8,
+    "x1": 4,
+    "second_reply": null
+  },
+  {
+    "s": 5,
+    "b": 9,
+    "x1": 1,
+    "second_reply": null
+  },
+  {
+    "s": 5,
+    "b": 10,
+    "x1": 2,
+    "second_reply": null
+  },
+  {
+    "s": 5,
+    "b": 11,
+    "x1": 3,
+    "second_reply": null
+  },
+  {
+    "s": 5,
+    "b": 12,
+    "x1": 4,
+    "second_reply": null
+  },
+  {
+    "s": 5,
+    "b": 13,
+    "x1": 1,
+    "second_reply": null
+  },
+  {
+    "s": 5,
+    "b": 14,
+    "x1": 2,
+    "second_reply": null
+  },
+  {
+    "s": 5,
+    "b": 15,
+    "x1": 3,
+    "second_reply": null
+  },
+  {
+    "s": 5,
+    "b": 16,
+    "x1": 4,
+    "second_reply": null
+  },
+  {
+    "s": 5,
+    "b": 17,
+    "x1": 1,
+    "second_reply": null
+  },
+  {
+    "s": 5,
+    "b": 18,
+    "x1": 2,
+    "second_reply": null
+  },
+  {
+    "s": 5,
+    "b": 19,
+    "x1": 3,
+    "second_reply": null
+  },
+  {
+    "s": 5,
+    "b": 20,
+    "x1": 4,
+    "second_reply": null
+  },
+  {
+    "s": 10,
+    "b": 1,
+    "x1": 1,
+    "second_reply": null
+  },
+  {
+    "s": 10,
+    "b": 2,
+    "x1": 2,
+    "second_reply": null
+  },
+  {
+    "s": 10,
+    "b": 3,
+    "x1": 3,
+    "second_reply": null
+  },
+  {
+    "s": 10,
+    "b": 4,
+    "x1": 4,
+    "second_reply": null
+  },
+  {
+    "s": 10,
+    "b": 5,
+    "x1": 5,
+    "second_reply": null
+  },
+  {
+    "s": 10,
+    "b": 6,
+    "x1": 6,
+    "second_reply": null
+  },
+  {
+    "s": 10,
+    "b": 7,
+    "x1": 7,
+    "second_reply": null
+  },
+  {
+    "s": 10,
+    "b": 8,
+    "x1": 8,
+    "second_reply": null
+  },
+  {
+    "s": 10,
+    "b": 9,
+    "x1": 9,
+    "second_reply": null
+  },
+  {
+    "s": 10,
+    "b": 10,
+    "x1": 1,
+    "second_reply": null
+  },
+  {
+    "s": 10,
+    "b": 11,
+    "x1": 2,
+    "second_reply": null
+  },
+  {
+    "s": 10,
+    "b": 12,
+    "x1": 3,
+    "second_reply": null
+  },
+  {
+    "s": 10,
+    "b": 13,
+    "x1": 4,
+    "second_reply": null
+  },
+  {
+    "s": 10,
+    "b": 14,
+    "x1": 5,
+    "second_reply": null
+  },
+  {
+    "s": 10,
+    "b": 15,
+    "x1": 6,
+    "second_reply": null
+  },
+  {
+    "s": 10,
+    "b": 16,
+    "x1": 7,
+    "second_reply": null
+  },
+  {
+    "s": 10,
+    "b": 17,
+    "x1": 8,
+    "second_reply": null
+  },
+  {
+    "s": 10,
+    "b": 18,
+    "x1": 9,
+    "second_reply": null
+  },
+  {
+    "s": 10,
+    "b": 19,
+    "x1": 1,
+    "second_reply": null
+  },
+  {
+    "s": 10,
+    "b": 20,
+    "x1": 2,
+    "second_reply": null
+  },
+  {
+    "s": 10,
+    "b": 21,
+    "x1": 3,
+    "second_reply": null
+  },
+  {
+    "s": 10,
+    "b": 22,
+    "x1": 4,
+    "second_reply": null
+  },
+  {
+    "s": 10,
+    "b": 23,
+    "x1": 5,
+    "second_reply": null
+  },
+  {
+    "s": 10,
+    "b": 24,
+    "x1": 6,
+    "second_reply": null
+  },
+  {
+    "s": 10,
+    "b": 25,
+    "x1": 7,
+    "second_reply": null
+  },
+  {
+    "s": 10,
+    "b": 26,
+    "x1": 8,
+    "second_reply": null
+  },
+  {
+    "s": 10,
+    "b": 27,
+    "x1": 9,
+    "second_reply": null
+  },
+  {
+    "s": 10,
+    "b": 28,
+    "x1": 1,
+    "second_reply": null
+  },
+  {
+    "s": 10,
+    "b": 29,
+    "x1": 2,
+    "second_reply": null
+  },
+  {
+    "s": 10,
+    "b": 30,
+    "x1": 3,
+    "second_reply": null
+  },
+  {
+    "s": 10,
+    "b": 31,
+    "x1": 4,
+    "second_reply": null
+  },
+  {
+    "s": 10,
+    "b": 32,
+    "x1": 5,
+    "second_reply": null
+  },
+  {
+    "s": 10,
+    "b": 33,
+    "x1": 6,
+    "second_reply": null
+  },
+  {
+    "s": 10,
+    "b": 34,
+    "x1": 7,
+    "second_reply": null
+  },
+  {
+    "s": 10,
+    "b": 35,
+    "x1": 8,
+    "second_reply": null
+  },
+  {
+    "s": 10,
+    "b": 36,
+    "x1": 9,
+    "second_reply": null
+  },
+  {
+    "s": 10,
+    "b": 37,
+    "x1": 1,
+    "second_reply": null
+  },
+  {
+    "s": 10,
+    "b": 38,
+    "x1": 2,
+    "second_reply": null
+  },
+  {
+    "s": 10,
+    "b": 39,
+    "x1": 3,
+    "second_reply": null
+  },
+  {
+    "s": 10,
+    "b": 40,
+    "x1": 4,
+    "second_reply": null
+  },
+  {
+    "s": 100,
+    "b": 100,
+    "x1": 1,
+    "second_reply": null
+  },
+  {
+    "s": 100,
+    "b": 250,
+    "x1": 52,
+    "second_reply": null
+  }
+]
