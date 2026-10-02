@@ -1,0 +1,1 @@
+What positive integer bid should the first mover choose in a subgame-perfect equilibrium? Return exactly one JSON object: {"first_bid":INTEGER,"reason":"BRIEF REASON"}.

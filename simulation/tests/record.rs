@@ -22,6 +22,10 @@ fn temp_dir(label: &str) -> PathBuf {
 }
 
 fn run_play(root: &Path, p1: &str, p2: &str, s: u32, b: u32) -> PathBuf {
+    run_play_with_args(root, p1, p2, s, b, &[])
+}
+
+fn run_play_with_args(root: &Path, p1: &str, p2: &str, s: u32, b: u32, extra: &[&str]) -> PathBuf {
     let output = Command::new(env!("CARGO_BIN_EXE_dollar-auction"))
         .args([
             "play",
@@ -37,6 +41,7 @@ fn run_play(root: &Path, p1: &str, p2: &str, s: u32, b: u32) -> PathBuf {
             "--results-dir",
         ])
         .arg(root)
+        .args(extra)
         .output()
         .unwrap();
     assert!(
@@ -52,6 +57,57 @@ fn run_play(root: &Path, p1: &str, p2: &str, s: u32, b: u32) -> PathBuf {
             .find_map(|line| line.strip_prefix("Run directory: "))
             .unwrap(),
     )
+}
+
+#[test]
+fn scripted_escalation_stops_at_the_configured_turn_cap() {
+    let root = temp_dir("turn_cap");
+    let fixtures = Path::new(env!("CARGO_MANIFEST_DIR")).join("tests/fixtures");
+    let p1 = format!(
+        "scripted:{}",
+        fixtures.join("escalate_odd_to_49.jsonl").display()
+    );
+    let p2 = format!(
+        "scripted:{}",
+        fixtures.join("escalate_even_to_50.jsonl").display()
+    );
+    let run = run_play_with_args(&root, &p1, &p2, 100, 250, &["--max-bids", "50"]);
+    runvault::verify::deep(&run).unwrap();
+
+    let rows = events(&run);
+    let terminal = rows
+        .iter()
+        .find(|event| event["schema"] == "terminal")
+        .unwrap();
+    assert_eq!(terminal["outcome"], "turn_cap");
+    assert_eq!(terminal["t"], 50);
+    assert_eq!(terminal["budget"], 50);
+    assert_eq!(terminal["censored"], true);
+    assert_eq!(
+        rows.iter()
+            .filter(|event| {
+                event["schema"] == "x.dollar-auction-escalation.decision"
+                    && event["action"] == "bid"
+            })
+            .count(),
+        50
+    );
+
+    let trial = rows
+        .iter()
+        .find(|event| event["schema"] == "x.dollar-auction-escalation.trial")
+        .unwrap();
+    assert_eq!(trial["T"], 50);
+    assert_eq!(trial["turn_capped"], true);
+    assert_eq!(trial["waste_is_lower_bound"], true);
+    assert_eq!(trial["max_bids"], 50);
+    assert_eq!(
+        fs::read_to_string(run.join("artifacts/transcripts.jsonl"))
+            .unwrap()
+            .lines()
+            .count(),
+        50
+    );
 }
 
 fn events(run: &Path) -> Vec<serde_json::Value> {
@@ -155,6 +211,7 @@ fn fenced_calls_and_think_setting_are_recorded() {
         display_paid_so_far: false,
         root_seed: 42,
         trial_seed: 7,
+        max_bids: None,
     };
     let (run, _) = record_play(
         &config,

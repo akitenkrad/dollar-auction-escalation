@@ -46,6 +46,18 @@ pub fn apply_response(world: &mut AuctionWorld, response: Response, attempt: u32
                 attempt,
             });
             world.to_move = world.to_move.other();
+            if world
+                .max_bids
+                .is_some_and(|max_bids| world.bids.len() as u64 >= u64::from(max_bids))
+            {
+                let winner = world.bids.last().map(|bid| bid.player);
+                let reason = if legal_bid_range(world).is_none() {
+                    EndReason::CapReached
+                } else {
+                    EndReason::TurnCap
+                };
+                world.status = Status::Ended { winner, reason };
+            }
             RuleResult::Accepted
         }
         Response::Calc(_) | Response::Malformed(_) => RuleResult::RangeViolation {

@@ -13,6 +13,7 @@ dist/
 
 # Simulation outputs
 results/
+analysis/
 
 # Claude Code local settings and notes
 .claude/

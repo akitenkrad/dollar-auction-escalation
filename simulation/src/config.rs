@@ -3,6 +3,12 @@ use serde::{Deserialize, Serialize};
 pub const DEFAULT_TEMPERATURE: f32 = 0.7;
 pub const DEFAULT_ROOT_SEED: u64 = 42;
 
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub struct ModelSpec {
+    pub tag: String,
+    pub digest_prefix: String,
+}
+
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct GameConfig {
     pub s: u32,

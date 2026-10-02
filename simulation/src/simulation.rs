@@ -24,6 +24,8 @@ pub struct TrialResult {
     pub first_end: bool,
     pub waste: f64,
     pub invalid_turn: Option<u64>,
+    pub turn_capped: bool,
+    pub waste_is_lower_bound: bool,
 }
 
 #[derive(Debug, Clone, Copy)]
@@ -33,6 +35,7 @@ pub struct TrialRunConfig {
     pub display_paid_so_far: bool,
     pub engine_seed: u64,
     pub paraphrase_id: u8,
+    pub max_bids: Option<u32>,
 }
 
 struct SharedBidders(Rc<RefCell<[Box<dyn Bidder>; 2]>>);
@@ -97,6 +100,7 @@ impl Mechanism<AuctionWorld> for TakeTurn {
         loop {
             let mut bidders = self.bidders.0.borrow_mut();
             let bidder = &mut bidders[index];
+            let is_llm = bidder.is_llm();
             bidder.set_engine_draw(ctx.rng.next_u64());
             let mut response = bidder.act(&observation, feedback.as_ref());
             if bidder.take_thinking_observed() {
@@ -144,8 +148,30 @@ impl Mechanism<AuctionWorld> for TakeTurn {
 
             match protocol.evaluate(response, &raw) {
                 ProtocolDecision::Action(action) => {
+                    let me = ctx.world.last_bid(player);
+                    let opp = ctx.world.last_bid(player.other());
+                    let (action_name, amount) = match &action {
+                        Response::Bid(amount) => ("bid", Some(*amount)),
+                        Response::Drop => ("drop", None),
+                        Response::Calc(_) | Response::Malformed(_) => {
+                            unreachable!("the protocol only accepts bid or drop")
+                        }
+                    };
                     apply_response(ctx.world, action, feedback.as_ref().map_or(1, |_| 2));
                     let t = ctx.world.bids.len() as u64;
+                    ctx.recorder.record_event(
+                        t,
+                        "decision",
+                        json!({
+                            "unit_id": "trial-0",
+                            "player": player.index() + 1,
+                            "me": me,
+                            "opp": opp,
+                            "action": action_name,
+                            "amount": amount,
+                            "is_llm": is_llm,
+                        }),
+                    );
                     ctx.recorder.record_event(
                         t,
                         "observation",
@@ -205,9 +231,10 @@ impl Mechanism<AuctionWorld> for Settle {
             return Ok(());
         };
         let t = ctx.world.bids.len() as u64;
-        let censored = reason == EndReason::CapReached;
-        // A bidder may jump directly to the cap, so cap reached can have t < b.
-        // Runvault requires t == budget for censored terminal events.
+        let censored = matches!(reason, EndReason::CapReached | EndReason::TurnCap);
+        // A bidder may jump directly to the budget cap, so that outcome can
+        // have t < b. Runvault requires t == budget for every censored row;
+        // the configured turn cap likewise uses its reached bid count.
         let budget = if censored {
             t
         } else {
@@ -217,6 +244,7 @@ impl Mechanism<AuctionWorld> for Settle {
         let x1_star = proposition_first_bid(ctx.world.s, ctx.world.b[0]);
         let last_total = ctx.world.last_bid(Player::P1) + ctx.world.last_bid(Player::P2);
         let waste = f64::from(last_total) / f64::from(ctx.world.s);
+        let turn_capped = reason == EndReason::TurnCap;
         ctx.recorder.record_event(
             t,
             "trial",
@@ -229,6 +257,9 @@ impl Mechanism<AuctionWorld> for Settle {
                 "paraphrase_id": ctx.world.paraphrase_id,
                 "thinking_calls": ctx.world.thinking_calls,
                 "fenced_calls": ctx.world.fenced_calls,
+                "turn_capped": turn_capped,
+                "waste_is_lower_bound": turn_capped,
+                "max_bids": ctx.world.max_bids,
             }),
         );
         ctx.recorder.record_event(
@@ -263,6 +294,7 @@ pub fn play_trial(
             display_paid_so_far,
             engine_seed: 0,
             paraphrase_id: 0,
+            max_bids: None,
         },
         p1,
         p2,
@@ -276,7 +308,8 @@ pub fn run_trial_with_recorder(
     p2: Box<dyn Bidder>,
     recorder: Box<dyn Recorder>,
 ) -> Result<TrialResult, String> {
-    let mut world = AuctionWorld::new(config.s, [config.b, config.b], config.display_paid_so_far);
+    let mut world = AuctionWorld::new(config.s, [config.b, config.b], config.display_paid_so_far)
+        .with_max_bids(config.max_bids);
     world.paraphrase_id = config.paraphrase_id;
     let mut simulation = SimulationBuilder::new(world)
         .scheduler(Box::new(SequentialScheduler))
@@ -294,11 +327,11 @@ pub fn run_trial_with_recorder(
         outcome: world.outcome().to_string(),
         payoffs: world.payoffs(),
         bids: world.bids.clone(),
-        turns: world.clock.t(),
+        turns: world.bids.len() as u64,
         censored: matches!(
             world.status,
             Status::Ended {
-                reason: EndReason::CapReached,
+                reason: EndReason::CapReached | EndReason::TurnCap,
                 ..
             }
         ),
@@ -306,6 +339,20 @@ pub fn run_trial_with_recorder(
         first_end: world.bids.len() <= 1,
         waste: f64::from(last_total) / f64::from(config.s),
         invalid_turn: world.invalid_turn,
+        turn_capped: matches!(
+            world.status,
+            Status::Ended {
+                reason: EndReason::TurnCap,
+                ..
+            }
+        ),
+        waste_is_lower_bound: matches!(
+            world.status,
+            Status::Ended {
+                reason: EndReason::TurnCap,
+                ..
+            }
+        ),
     })
 }
 

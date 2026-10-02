@@ -36,6 +36,51 @@ unit = "ratio"
 direction = "none"
 scope = ["run"]
 
+[metrics."tokens_in"]
+meaning = "Sum of reported prompt-token counts across model calls; calls without a count contribute no tokens."
+unit = "tokens"
+direction = "none"
+scope = ["run"]
+
+[metrics."tokens_out"]
+meaning = "Sum of reported completion-token counts across model calls; calls without a count contribute no tokens."
+unit = "tokens"
+direction = "none"
+scope = ["run"]
+
+[metrics."n_calls"]
+meaning = "Number of model calls made in the run."
+unit = "count"
+direction = "none"
+scope = ["run"]
+
+[metrics."n_calls_missing_prompt_tokens"]
+meaning = "Number of model calls that did not report a prompt-token count."
+unit = "count"
+direction = "none"
+scope = ["run"]
+
+[metrics."quiz_drop_solve_rate"]
+meaning = "Share of valid or invalid quiz sessions whose answer matches the drop-on-ties anchor."
+unit = "ratio"
+direction = "none"
+range = [0.0, 1.0]
+scope = ["run"]
+
+[metrics."quiz_mixed_solve_rate"]
+meaning = "Share of quiz sessions whose answer matches the uniform-mixing-on-ties anchor."
+unit = "ratio"
+direction = "none"
+range = [0.0, 1.0]
+scope = ["run"]
+
+[metrics."quiz_invalid_rate"]
+meaning = "Share of quiz sessions with an invalid JSON answer."
+unit = "ratio"
+direction = "none"
+range = [0.0, 1.0]
+scope = ["run"]
+
 [parameters."/s"]
 meaning = "Prize or contract value."
 unit = "bid units"
@@ -79,3 +124,52 @@ meaning = "Thinking-mode value sent with every LLM request."
 
 [parameters."/command"]
 meaning = "CLI subcommand that created the run."
+
+[parameters."/budgets"]
+meaning = "Budget or cap values included in a sweep."
+unit = "bid units"
+
+[parameters."/trials"]
+meaning = "Number of independent trials in each cell."
+unit = "count"
+
+[parameters."/max_bids"]
+meaning = "Maximum accepted bids before a trial is censored by the turn cap; null means unlimited."
+unit = "count"
+
+[parameters."/concurrency"]
+meaning = "Maximum number of trials executed concurrently within one pilot cell."
+unit = "count"
+
+[parameters."/models"]
+meaning = "Ordered model tags and configured digest prefixes."
+
+[parameters."/verified_model_digests"]
+meaning = "Full model digests returned by Ollama during sweep preflight."
+
+[parameters."/cells"]
+meaning = "Ordered pilot cell definitions."
+
+[parameters."/resume"]
+meaning = "Prior sweep parent used for cell-level resume, or null."
+
+[parameters."/cell_key"]
+meaning = "Human-readable identity of one pilot cell."
+
+[parameters."/model"]
+meaning = "Ollama model tag used in this child run."
+
+[parameters."/model_digest"]
+meaning = "Full model digest returned by Ollama before this child run."
+
+[parameters."/model_digest_prefix"]
+meaning = "Required model digest prefix from the pilot configuration."
+
+[parameters."/kind"]
+meaning = "Main, LLM-versus-solver, or calculator pilot cell kind."
+
+[parameters."/input_run_uids"]
+meaning = "Run identifiers used as inputs to an analysis run."
+
+[parameters."/input_path"]
+meaning = "Input run path supplied to the local analysis command."

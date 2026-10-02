@@ -1,0 +1,53 @@
+{
+  "schema_version": "1.0",
+  "run_uid": "01M3X55NE1EEY3PV9GTPVK1V4K",
+  "runvault": {
+    "hash_exclude": [],
+    "seed_pointers": [
+      "/root_seed"
+    ],
+    "determinism": {
+      "invariant_to": []
+    },
+    "sync_include": [],
+    "sync_exclude": []
+  },
+  "parameters": {
+    "budgets": [
+      100,
+      250
+    ],
+    "cells": [
+      {
+        "b": 100,
+        "calculator": false,
+        "framing": "disguised",
+        "kind": "main",
+        "opponent": "rational_ai"
+      },
+      {
+        "b": 250,
+        "calculator": false,
+        "framing": "disguised",
+        "kind": "main",
+        "opponent": "human"
+      }
+    ],
+    "command": "pilot",
+    "models": [
+      {
+        "digest_prefix": "001e5dafc3c7",
+        "tag": "gemma4:26b"
+      }
+    ],
+    "resume": null,
+    "root_seed": 42,
+    "s": 100,
+    "temperature": 0.699999988079071,
+    "think": false,
+    "trials": 3,
+    "verified_model_digests": {
+      "gemma4:26b": "001e5dafc3c77684c2307ebc6ab8e336e10c9b18eca52acf547d72fc83c3ca8c"
+    }
+  }
+}

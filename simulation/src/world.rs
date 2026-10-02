@@ -46,6 +46,7 @@ pub struct Bid {
 pub enum EndReason {
     Drop,
     CapReached,
+    TurnCap,
     Invalid,
 }
 
@@ -84,6 +85,7 @@ pub struct AuctionWorld {
     pub paraphrase_id: u8,
     pub thinking_calls: u64,
     pub fenced_calls: u64,
+    pub max_bids: Option<u32>,
 }
 
 impl AuctionWorld {
@@ -102,7 +104,13 @@ impl AuctionWorld {
             paraphrase_id: 0,
             thinking_calls: 0,
             fenced_calls: 0,
+            max_bids: None,
         }
+    }
+
+    pub fn with_max_bids(mut self, max_bids: Option<u32>) -> Self {
+        self.max_bids = max_bids;
+        self
     }
 
     pub fn highest_bid(&self) -> u32 {
@@ -143,6 +151,10 @@ impl AuctionWorld {
 
     pub fn outcome(&self) -> &'static str {
         match self.status {
+            Status::Ended {
+                reason: EndReason::TurnCap,
+                ..
+            } => "turn_cap",
             Status::Ended {
                 reason: EndReason::Invalid,
                 ..

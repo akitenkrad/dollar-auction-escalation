@@ -3,7 +3,14 @@ name = "dollar-auction-tools"
 version = "0.1.0"
 description = "Exact reference solver tools for the dollar-auction experiment"
 requires-python = ">=3.11"
-dependencies = []
+dependencies = [
+    "lifelines>=0.29",
+    "matplotlib>=3.8",
+    "numpy>=1.26",
+    "pandas>=2.2",
+    "runvault[read]>=0.1.0",
+    "statsmodels>=0.14",
+]
 
 [project.scripts]
 dollar-auction-tools = "dollar_auction_tools.cli:main"

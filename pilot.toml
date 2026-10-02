@@ -1,0 +1,98 @@
+s = 100
+budgets = [100, 250]
+trials = 30
+temperature = 0.7
+root_seed = 42
+max_bids = 50
+concurrency = 2
+
+[[models]]
+tag = "gemma4:26b"
+digest_prefix = "001e5dafc3c7"
+
+[[models]]
+tag = "olmo-3.1:32b-instruct"
+digest_prefix = "a16b6a5be6cf"
+
+[[cells]]
+kind = "main"
+framing = "named"
+opponent = "rational_ai"
+b = 100
+[[cells]]
+kind = "main"
+framing = "named"
+opponent = "rational_ai"
+b = 250
+[[cells]]
+kind = "main"
+framing = "named"
+opponent = "human"
+b = 100
+[[cells]]
+kind = "main"
+framing = "named"
+opponent = "human"
+b = 250
+[[cells]]
+kind = "main"
+framing = "named"
+opponent = "same_model"
+b = 100
+[[cells]]
+kind = "main"
+framing = "named"
+opponent = "same_model"
+b = 250
+[[cells]]
+kind = "main"
+framing = "disguised"
+opponent = "rational_ai"
+b = 100
+[[cells]]
+kind = "main"
+framing = "disguised"
+opponent = "rational_ai"
+b = 250
+[[cells]]
+kind = "main"
+framing = "disguised"
+opponent = "human"
+b = 100
+[[cells]]
+kind = "main"
+framing = "disguised"
+opponent = "human"
+b = 250
+[[cells]]
+kind = "main"
+framing = "disguised"
+opponent = "same_model"
+b = 100
+[[cells]]
+kind = "main"
+framing = "disguised"
+opponent = "same_model"
+b = 250
+[[cells]]
+kind = "llm_vs_solver"
+framing = "disguised"
+opponent = "rational_ai"
+b = 100
+[[cells]]
+kind = "llm_vs_solver"
+framing = "disguised"
+opponent = "rational_ai"
+b = 250
+[[cells]]
+kind = "calculator"
+framing = "disguised"
+opponent = "rational_ai"
+b = 100
+calculator = true
+[[cells]]
+kind = "calculator"
+framing = "disguised"
+opponent = "rational_ai"
+b = 250
+calculator = true

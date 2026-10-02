@@ -1,0 +1,23 @@
+s = 100
+budgets = [100, 250]
+trials = 3
+temperature = 0.7
+root_seed = 42
+max_bids = 50
+concurrency = 2
+
+[[models]]
+tag = "gemma4:26b"
+digest_prefix = "001e5dafc3c7"
+
+[[cells]]
+kind = "main"
+framing = "disguised"
+opponent = "rational_ai"
+b = 100
+
+[[cells]]
+kind = "main"
+framing = "disguised"
+opponent = "human"
+b = 250

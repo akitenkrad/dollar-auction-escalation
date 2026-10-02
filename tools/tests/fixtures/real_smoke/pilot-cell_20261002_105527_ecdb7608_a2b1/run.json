@@ -1,0 +1,81 @@
+{
+  "schema_version": "1.0",
+  "vocab_version": "1.4",
+  "runvault_version": "0.1.0",
+  "run_uid": "01M3X55NKVTAWED1WV82H7ZNTY",
+  "run_slug": "pilot-cell_20261002_105527_ecdb7608_a2b1",
+  "repo_id": "dollar-auction-escalation",
+  "experiment": "dollar-auction",
+  "subcommand": "pilot-cell",
+  "domain": "simulation",
+  "config_hash": "ecdb76082ebe77eec1ce516628807f0bcebebff1699b3466b291adcc8acf1fe1",
+  "execution_hash": "a2b144a80e5b8884fd63dcb677adb1a4baba408182a597f98a59803a71c08781",
+  "created_at": "2026-10-02T10:55:27.995318+09:00",
+  "cli_args": [
+    "./target/release/dollar-auction",
+    "pilot",
+    "--config",
+    "pilot.smoke.toml",
+    "--scratch"
+  ],
+  "origin": "code",
+  "visibility": "internal",
+  "code": {
+    "git_remote": "git@github.com:akitenkrad/dollar-auction-escalation.git",
+    "git_branch": "main",
+    "git_commit": "f05744971a6e609d70b2aa2fab06b4b6c55e6c11",
+    "git_dirty": true,
+    "dirty_hash": {
+      "algorithm": "blake3",
+      "value": "79b61064e6ff54bcfe4decf67e7f1323fde02a840b9efa57aeefef9a9ee28504"
+    },
+    "repo_relpath": null,
+    "locks": [
+      {
+        "kind": "cargo",
+        "hash": {
+          "algorithm": "blake3",
+          "value": "0c82f06e2f9cfd9ed242ddbd5cf69bf4d7ca4dedbb4d2cbc2f99dae05cd7f76c"
+        },
+        "file": "lock/Cargo.lock"
+      },
+      {
+        "kind": "uv",
+        "hash": {
+          "algorithm": "blake3",
+          "value": "26f925dafd5d5af9656e6c0321e39f2addb555786f09d4521bfcf75f0fca7652"
+        },
+        "file": "lock/uv.lock"
+      }
+    ]
+  },
+  "env": {
+    "env_hash": "400b98019ebeef1a05ada1e7d330aa7930be3b46a6f9babf62d3a671ab41bc68",
+    "host": "Mac-mini-3.local",
+    "os": "macos",
+    "arch": "aarch64",
+    "rustc_version": "rustc 1.94.0 (4a4ef493e 2026-03-02)",
+    "python_version": null
+  },
+  "rng": {
+    "master_seed": 42,
+    "replicate_index": null
+  },
+  "data": [],
+  "lineage": {
+    "sweep_id": "pilot_20261002_105527_1583ad74_3877",
+    "parent_run_uid": "01M3X55NE1EEY3PV9GTPVK1V4K",
+    "sweep_index": 0,
+    "sweep_total": 2,
+    "resumed_from": null,
+    "derived_from": null
+  },
+  "research": {
+    "is_replication": false,
+    "work": null,
+    "targets": [],
+    "upstream_impl": null,
+    "obsidian_note": null,
+    "jira": []
+  }
+}

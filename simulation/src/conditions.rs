@@ -42,7 +42,7 @@ pub fn auxiliary_cells() -> Vec<ExperimentCell> {
             llm_vs_solver: false,
         });
         cells.push(ExperimentCell {
-            framing: Framing::Named,
+            framing: Framing::Disguised,
             opponent: OpponentAnnouncement::RationalAi,
             b,
             calculator: false,

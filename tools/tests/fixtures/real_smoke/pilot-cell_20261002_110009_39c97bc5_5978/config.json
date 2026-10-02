@@ -1,0 +1,32 @@
+{
+  "schema_version": "1.0",
+  "run_uid": "01M3X5E8NMBDFF2VDTF63BF5QT",
+  "runvault": {
+    "hash_exclude": [],
+    "seed_pointers": [
+      "/root_seed"
+    ],
+    "determinism": {
+      "invariant_to": []
+    },
+    "sync_include": [],
+    "sync_exclude": []
+  },
+  "parameters": {
+    "b": 250,
+    "calculator": false,
+    "cell_key": "gemma4:26b|main|disguised|human|250|false",
+    "command": "pilot-cell",
+    "framing": "disguised",
+    "kind": "main",
+    "model": "gemma4:26b",
+    "model_digest": "001e5dafc3c77684c2307ebc6ab8e336e10c9b18eca52acf547d72fc83c3ca8c",
+    "model_digest_prefix": "001e5dafc3c7",
+    "opponent": "human",
+    "root_seed": 42,
+    "s": 100,
+    "temperature": 0.699999988079071,
+    "think": false,
+    "trials": 3
+  }
+}

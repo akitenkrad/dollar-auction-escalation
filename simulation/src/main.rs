@@ -7,7 +7,11 @@ use dollar_auction_simulation::bidder::{
 };
 use dollar_auction_simulation::config::DEFAULT_ROOT_SEED;
 use dollar_auction_simulation::llm::scripted_client_from_file;
+use dollar_auction_simulation::llm::{ollama_host, HttpTagsFetcher};
+use dollar_auction_simulation::pilot::{run_pilot, OllamaClientFactory, PilotConfig};
 use dollar_auction_simulation::prompt::{Framing, OpponentAnnouncement, PromptCondition};
+use dollar_auction_simulation::qre_fit::run_qre_fit;
+use dollar_auction_simulation::quiz::run_quiz;
 use dollar_auction_simulation::record::{record_play, RecordConfig};
 use dollar_auction_simulation::seeds::trial_seed;
 use dollar_auction_simulation::simulation::empty_transcript_sink;
@@ -33,6 +37,12 @@ enum Command {
     VerifySolver,
     /// Play and record one scratch trial.
     Play(PlayArgs),
+    /// Run the configured model-by-condition pilot sweep.
+    Pilot(PilotArgs),
+    /// Run the separate first-bid solution quiz.
+    Quiz(QuizArgs),
+    /// Fit agent-QRE lambda values from recorded LLM decisions.
+    FitQre(FitQreArgs),
 }
 
 #[derive(Args, Debug)]
@@ -68,6 +78,9 @@ struct PlayArgs {
     /// Common budget or cap.
     #[arg(long)]
     b: u32,
+    /// Maximum accepted bids before censoring; omitted means unlimited.
+    #[arg(long)]
+    max_bids: Option<u32>,
     /// Prompt framing: named or disguised.
     #[arg(long, default_value = "named")]
     framing: String,
@@ -92,6 +105,56 @@ struct PlayArgs {
     /// Results root. Primarily used by isolated integration tests.
     #[arg(long, default_value = "results")]
     results_dir: PathBuf,
+}
+
+#[derive(Args, Debug)]
+struct RunModeArgs {
+    /// Store the run below the results root's _scratch directory.
+    #[arg(long, required_unless_present = "prod", conflicts_with = "prod")]
+    scratch: bool,
+    /// Explicitly opt in to a non-scratch production run.
+    #[arg(long, required_unless_present = "scratch", conflicts_with = "scratch")]
+    prod: bool,
+    /// Results root.
+    #[arg(long, default_value = "results")]
+    results_dir: PathBuf,
+}
+
+impl RunModeArgs {
+    fn is_scratch(&self) -> bool {
+        debug_assert_ne!(self.scratch, self.prod);
+        self.scratch
+    }
+}
+
+#[derive(Args, Debug)]
+struct PilotArgs {
+    /// Pilot configuration TOML.
+    #[arg(long)]
+    config: PathBuf,
+    /// Previous sweep parent whose finished matching cells should be skipped.
+    #[arg(long)]
+    resume: Option<PathBuf>,
+    #[command(flatten)]
+    mode: RunModeArgs,
+}
+
+#[derive(Args, Debug)]
+struct QuizArgs {
+    /// Pilot configuration TOML supplying models, budgets, and trial count.
+    #[arg(long)]
+    config: PathBuf,
+    #[command(flatten)]
+    mode: RunModeArgs,
+}
+
+#[derive(Args, Debug)]
+struct FitQreArgs {
+    /// Pilot child or parent run directory.
+    #[arg(long)]
+    run: PathBuf,
+    #[command(flatten)]
+    mode: RunModeArgs,
 }
 
 fn main() -> ExitCode {
@@ -138,6 +201,38 @@ fn run(cli: Cli) -> Result<(), String> {
         },
         Command::VerifySolver => verify_solver()?,
         Command::Play(args) => play(args)?,
+        Command::Pilot(args) => {
+            let config = PilotConfig::from_path(&args.config)?;
+            let factory = OllamaClientFactory::new(ollama_host());
+            let result = run_pilot(
+                &config,
+                &args.mode.results_dir,
+                args.mode.is_scratch(),
+                args.resume.as_deref(),
+                &HttpTagsFetcher,
+                &factory,
+            )?;
+            println!("Parent run directory: {}", result.parent_dir.display());
+            println!("Completed child runs: {}", result.child_dirs.len());
+            println!("Skipped finished cells: {}", result.skipped_cells);
+        }
+        Command::Quiz(args) => {
+            let config = PilotConfig::from_path(&args.config)?;
+            let factory = OllamaClientFactory::new(ollama_host());
+            let result = run_quiz(
+                &config,
+                &args.mode.results_dir,
+                args.mode.is_scratch(),
+                &HttpTagsFetcher,
+                &factory,
+            )?;
+            println!("Parent run directory: {}", result.parent_dir.display());
+            println!("Completed child runs: {}", result.child_dirs.len());
+        }
+        Command::FitQre(args) => {
+            let result = run_qre_fit(&args.run, &args.mode.results_dir, args.mode.is_scratch())?;
+            println!("Run directory: {}", result.display());
+        }
     }
     Ok(())
 }
@@ -172,6 +267,9 @@ fn play(args: PlayArgs) -> Result<(), String> {
     if args.s < 2 || args.b < 1 {
         return Err("--s must be at least 2 and --b must be positive".to_string());
     }
+    if args.max_bids == Some(0) {
+        return Err("--max-bids must be positive when provided".to_string());
+    }
     if args.paraphrase > 2 {
         return Err("--paraphrase must be 0, 1, or 2".to_string());
     }
@@ -199,6 +297,7 @@ fn play(args: PlayArgs) -> Result<(), String> {
         display_paid_so_far: args.display_paid_so_far,
         root_seed: args.seed,
         trial_seed: trial,
+        max_bids: args.max_bids,
     };
     let (directory, result) = record_play(
         &config,

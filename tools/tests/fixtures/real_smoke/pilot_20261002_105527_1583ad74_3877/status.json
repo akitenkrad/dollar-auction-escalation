@@ -1,0 +1,16 @@
+{
+  "schema_version": "1.0",
+  "run_uid": "01M3X55NE1EEY3PV9GTPVK1V4K",
+  "state": "finished",
+  "started_at": "2026-10-02T10:55:27.809081+09:00",
+  "finished_at": "2026-10-02T11:16:19.722064+09:00",
+  "duration_sec": 1251.912,
+  "exit_code": 0,
+  "collision_index": null,
+  "error": null,
+  "counts": {
+    "metrics": 0,
+    "events": 0,
+    "artifacts": 1
+  }
+}

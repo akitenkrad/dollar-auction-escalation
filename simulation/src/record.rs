@@ -22,6 +22,7 @@ pub struct RecordConfig {
     pub display_paid_so_far: bool,
     pub root_seed: u64,
     pub trial_seed: u64,
+    pub max_bids: Option<u32>,
 }
 
 pub fn record_play(
@@ -47,6 +48,7 @@ pub fn record_play(
         "display_paid_so_far": config.display_paid_so_far,
         "root_seed": config.root_seed,
         "trial_seed": config.trial_seed,
+        "max_bids": config.max_bids,
         "temperature": crate::config::DEFAULT_TEMPERATURE,
         "think": crate::llm::MODEL_THINK,
         "command": "play",
@@ -75,6 +77,7 @@ pub fn record_play(
             display_paid_so_far: config.display_paid_so_far,
             engine_seed: config.trial_seed,
             paraphrase_id: config.paraphrase,
+            max_bids: config.max_bids,
         },
         p1,
         p2,

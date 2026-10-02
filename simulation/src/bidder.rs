@@ -52,6 +52,10 @@ pub trait Bidder {
     fn take_fenced_observed(&mut self) -> bool {
         false
     }
+
+    fn is_llm(&self) -> bool {
+        false
+    }
 }
 
 #[derive(Debug, Default)]
@@ -162,6 +166,10 @@ impl Bidder for QreBidder {
 
 #[derive(Debug, Clone, Serialize)]
 pub struct Transcript {
+    pub trial: Option<usize>,
+    pub turn: u64,
+    pub attempt: u32,
+    pub player: usize,
     pub system: String,
     pub user: String,
     pub raw_response: String,
@@ -172,6 +180,7 @@ pub struct Transcript {
     pub think: Option<bool>,
     pub fenced: bool,
     pub raw_action: Option<String>,
+    pub reason: Option<String>,
 }
 
 pub type TranscriptSink = Rc<RefCell<Vec<Transcript>>>;
@@ -188,6 +197,7 @@ pub struct LlmBidder {
     contradiction: Option<String>,
     thinking_observed: bool,
     fenced_observed: bool,
+    trial_index: Option<usize>,
 }
 
 impl LlmBidder {
@@ -218,7 +228,13 @@ impl LlmBidder {
             contradiction: None,
             thinking_observed: false,
             fenced_observed: false,
+            trial_index: None,
         }
+    }
+
+    pub fn with_trial_index(mut self, trial_index: usize) -> Self {
+        self.trial_index = Some(trial_index);
+        self
     }
 
     pub fn transcripts(&self) -> TranscriptSink {
@@ -227,6 +243,10 @@ impl LlmBidder {
 }
 
 impl Bidder for LlmBidder {
+    fn is_llm(&self) -> bool {
+        true
+    }
+
     fn act(&mut self, obs: &Observation, feedback: Option<&Violation>) -> Response {
         if self.last_turn == Some(obs.turn) {
             self.attempt += 1;
@@ -256,7 +276,16 @@ impl Bidder for LlmBidder {
         self.thinking_observed = response.thinking.is_some();
         self.fenced_observed = model_output_is_fenced(&response.text);
         let raw_action = raw_action_word(&response.text);
+        let parsed = parse_model_output_for_framing(&response.text, self.condition.framing);
+        let reason = parsed
+            .as_ref()
+            .ok()
+            .and_then(|parsed| parsed.reason.clone());
         self.transcripts.borrow_mut().push(Transcript {
+            trial: self.trial_index,
+            turn: obs.turn,
+            attempt: self.attempt,
+            player: player.index() + 1,
             system,
             user,
             raw_response: response.text.clone(),
@@ -267,8 +296,9 @@ impl Bidder for LlmBidder {
             think: sent_think,
             fenced: self.fenced_observed,
             raw_action,
+            reason,
         });
-        match parse_model_output_for_framing(&response.text, self.condition.framing) {
+        match parsed {
             Ok(parsed) => {
                 self.contradiction = parsed.contradiction;
                 parsed.response
